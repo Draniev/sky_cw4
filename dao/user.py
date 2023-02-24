@@ -12,9 +12,10 @@ class UserDAO:
     def get_all(self) -> list[User]:
         return self.session.query(User).all()
 
-    def get_one_by_username(self, username: str) -> User | None:
-        users = self.session.query(User).filter(User.username == username).all()
-        if len(users) == 1:     # Будем считать что имя пользователя у нас уникально (ну а как еще...)
+    def get_one_by_email(self, email: str) -> User | None:
+        users = self.session.query(User).filter(User.email == email).all()
+        # тк электронная почта уникальна то дб только 1 пользователь
+        if len(users) == 1:
             return users[0]
         else:
             return None

@@ -13,8 +13,8 @@ class UserService:
     def get_all(self) -> list[User]:
         return self.user_dao.get_all()
 
-    def get_by_name(self, username: str) -> User | None:
-        return self.user_dao.get_one_by_username(username)
+    def get_by_name(self, email: str) -> User | None:
+        return self.user_dao.get_one_by_email(email)
 
     def create(self, user_data: dict) -> User:
         # На вход получаем пароль в открытом виде, но сохраняем хэш
@@ -27,13 +27,21 @@ class UserService:
         keys_4_update = user_data.keys()
 
         if user:
-            if 'username' in keys_4_update:
-                user.username = user_data['username']
-            if 'password' in keys_4_update:
-                # На вход получаем пароль в открытом виде, но сохраняем хэш
-                user.password = get_hash(user_data['password'])
-            if 'role' in keys_4_update:
-                user.role = user_data['role']
+            if 'email' in keys_4_update:
+                user.email = user_data['email']
+            if 'name' in keys_4_update:
+                user.name = user_data['name']
+            if 'surname' in keys_4_update:
+                user.surname = user_data['surname']
+            if 'favorite_genre_id' in keys_4_update:
+                user.favorite_genre_id = user_data['favorite_genre_id']
+            # По ТЗ менять пароль требуется отдельной
+            # процедурой с передачей обоих паролей
+            # if 'password' in keys_4_update:
+            #     # На вход получаем пароль в открытом виде, но сохраняем хэш
+            #     user.password = get_hash(user_data['password'])
+            # if 'role' in keys_4_update:
+            #     user.role = user_data['role']
 
             return self.user_dao.update(user)
 
