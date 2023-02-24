@@ -7,11 +7,11 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255))
     password = db.Column(db.String(255))
+    # role = db.Column(db.String(255))
     name = db.Column(db.String(255))
     surname = db.Column(db.String(255))
     favorite_genre_id = db.Column(db.Integer, db.ForeignKey('genre.id'))
     favorite_genre = db.relationship('Genre')
-    # role = db.Column(db.String(255))
 
 
 class UserSchema(Schema):
@@ -23,4 +23,3 @@ class UserSchema(Schema):
     surname = fields.String()
     favorite_genre_id = fields.Integer()
     favorite_genre = fields.Nested('GenreSchema')
-    
