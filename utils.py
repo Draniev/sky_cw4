@@ -1,4 +1,5 @@
 import hashlib
+import re
 import time
 import jwt
 from flask import request, abort
@@ -57,3 +58,9 @@ def admin_required(func):
 
         return func(*args, **kwargs)
     return wrapper
+
+
+def is_email_valid(email: str) -> bool:
+    """ проверяет наличие собачки и точки"""
+    is_email = re.findall("^([a-z0-9_.]+@[a-z0-9_.]+\.[a-zA-Z]{2,6})$", email)
+    return bool(is_email)

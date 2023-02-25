@@ -13,7 +13,7 @@ class UserService:
     def get_all(self) -> list[User]:
         return self.user_dao.get_all()
 
-    def get_by_name(self, email: str) -> User | None:
+    def get_by_email(self, email: str) -> User | None:
         return self.user_dao.get_one_by_email(email)
 
     def create(self, user_data: dict) -> User:
@@ -45,6 +45,24 @@ class UserService:
 
             return self.user_dao.update(user)
 
+        else:
+            return None
+
+    def update_password(self, uid: int, old_password: str, new_password: str) -> User | None:
+        """
+        Меняет старый пароль на новый у пользователя с id = uid
+        :param uid: ID пользователя, у которого меняем пароли
+        :param old_password: старый пароль пользователя
+        :param new_password: новый пароль пользователя
+        :return:
+        """
+        user = self.user_dao.get_one(uid)
+        if user:
+            if user.password == get_hash(old_password):
+                user.password = get_hash(new_password)
+                return self.user_dao.update(user)
+            else:
+                return None
         else:
             return None
 

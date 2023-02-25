@@ -7,7 +7,7 @@ class User(db.Model):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255), unique=True)
-    password = db.Column(db.String(255))
+    password = db.Column(db.String(255), load_only=True)
     # role = db.Column(db.String(255))
     name = db.Column(db.String(255))
     surname = db.Column(db.String(255))
