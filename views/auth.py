@@ -18,8 +18,9 @@ class AuthView(Resource):
         """
         Аутентификация по email и паролю.
         В параметрах запроса ожидаем:
-            username: str
+            email: str
             password: str
+            :return: {'access_token': access_token, 'refresh_token': refresh_token}
         """
         req_json = request.json
         email = req_json.get("email", None)
@@ -50,6 +51,7 @@ class AuthView(Resource):
         В данных запроса ожидаем увидеть:
             email: str
             refresh_token: str
+            :return: {'access_token': access_token, 'refresh_token': refresh_token}
         """
 
         user_refresh_token_data = request.json()
@@ -81,7 +83,7 @@ class NewUserRegister(Resource):
         """
         Регистрирует нового пользователя в системе.
         В качестве параметров запроса обязательно ждём электронную почту и пароль
-        :return:
+        :return: "", 201
         """
         req_json = request.json
 
@@ -91,12 +93,12 @@ class NewUserRegister(Resource):
             return {"error": "Неверные учётные данные"}, 400
 
         # Проверяем, что такого пользователя еще нет
-        if not user_service.get_by_email(email):
+        if user_service.get_by_email(email):
             return {"error": "Такой пользователь уже существует"}, 400
 
         # Проверяем валидность электронной почты
         if not is_email_valid(email):
             return {"error": "В качестве имени пользователя указан не корректные email"}, 400
 
-        user = user_service.create(**req_json)  # Не знаю, стоит ли тут вернуть сразу токены авторизации?
-        return "", 201
+        user = user_service.create(req_json)  # Не знаю, стоит ли тут вернуть сразу токены авторизации?
+        return "", 201, {'localtion': f'/users/{user.id}'}
