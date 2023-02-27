@@ -7,10 +7,11 @@ from setup_db import db
 # from models import Review, Book
 
 # Импорт нэймспейсов из вьюшек
+from views.favorite import favorite_ns
 from views.genre import genre_ns
 from views.movie import movie_ns
 from views.director import director_ns
-from views.user import user_ns
+from views.user import user_ns, users_ns
 from views.auth import auth_ns
 
 
@@ -27,8 +28,10 @@ def register_extensions(app: Flask):
     api.add_namespace(movie_ns)
     api.add_namespace(genre_ns)
     api.add_namespace(director_ns)
+    api.add_namespace(users_ns)
     api.add_namespace(user_ns)
     api.add_namespace(auth_ns)
+    api.add_namespace(favorite_ns)
 #     create_data(app, db)
 
 

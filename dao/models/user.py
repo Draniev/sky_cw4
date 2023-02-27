@@ -11,8 +11,11 @@ class User(db.Model):
     # role = db.Column(db.String(255))
     name = db.Column(db.String(255))
     surname = db.Column(db.String(255))
+
     favorite_genre_id = db.Column(db.Integer, db.ForeignKey('genre.id'))
     favorite_genre = db.relationship('Genre', foreign_keys=[favorite_genre_id])
+
+    favorites = db.relationship('Movie', secondary='favorite')
 
 
 class UserSchema(Schema):
@@ -24,3 +27,5 @@ class UserSchema(Schema):
     surname = fields.String()
     favorite_genre_id = fields.Integer()
     favorite_genre = fields.Nested('GenreSchema', only=('id', 'name'))
+
+    favorites = fields.Nested('FavoriteSchema', many=True)

@@ -12,7 +12,7 @@ user_ns = Namespace('user')
 class UsersView(Resource):
     def get(self):
         """
-        Список всех пользователей системы. Доступ без авторизации (почемуб и нет)
+        Список всех пользователей системы. Доступ без авторизации (почему бы и нет)
         :return:
         """
         users = user_service.get_all()
@@ -31,7 +31,7 @@ class UserViewByID(Resource):
     @auth_required
     def get(self, uid: int):
         """
-        Вывод данных по пользователю с ID == uid
+        Вывод данных по пользователю с ID == uid.
         :param uid: id пользователя
         :return: Объект User в json формате
         """
@@ -44,7 +44,7 @@ class UserViewByID(Resource):
     @auth_required
     def put(self, uid: int):
         """
-        Обновление данных пользователя с ID == uid
+        Обновление данных пользователя с ID == uid.
         :param uid: id пользователя
         :return: "", 201
         """
@@ -56,13 +56,10 @@ class UserViewByID(Resource):
         else:
             return "Отсутствует пользователь для обновления", 404
 
-    # Удаление пользователя. Только для админа
     @auth_required
     def delete(self, uid: int):
         """
         Удаление пользователя с ID == uid
-        :param uid: id пользователя
-        :return: "", 204
         """
         user = user_service.delete(uid)
         if user:

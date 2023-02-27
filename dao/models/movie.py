@@ -15,6 +15,8 @@ class Movie(db.Model):
     genre = db.relationship('Genre')
     director = db.relationship('Director')
 
+    users_who_selected_favorite = db.relationship('User', secondary='favorite')
+
 
 class MovieSchema(Schema):
     id = fields.Integer()
