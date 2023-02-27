@@ -1,13 +1,13 @@
 from flask import request
 from flask_restx import Resource, Namespace
 
-from container import favorites_service, movie_service
+from container import favorites_service, movie_service, user_service
 from utils import check_auth
 
 favorite_ns = Namespace('favorites')
 
 
-@favorites_ns.route('/movies/<int:mid>')
+@favorite_ns.route('/movies/<int:mid>')
 class FavoritesCreateDelete(Resource):
     def post(self, mid: int):
         """
@@ -16,9 +16,11 @@ class FavoritesCreateDelete(Resource):
         :return:
         """
         current_user = check_auth(request.headers)
+        user = user_service.get_one(current_user['id'])
         movie = movie_service.get_one(mid)
         if movie:
-            favorites_service.create_by_user_movie(current_user['id'], mid)
+            favorites_service.add_to_curr_user(user, movie)
+            # favorites_service.create_by_user_movie(current_user['id'], mid)
             return "", 201
         else:
             return "Такой фильм отсутствует", 404

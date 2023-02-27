@@ -1,5 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from dao.models.favorite import Favorite
+from dao.models.movie import Movie
+from dao.models.user import User
 
 
 class FavoritesDAO:
@@ -61,3 +63,8 @@ class FavoritesDAO:
             self.session.add(new_item)
             self.session.commit()
             return new_item
+
+    def add_movie_to_curr_user(self, user: User, movie: Movie):
+        user.favorites.append(movie)
+        self.session.commit()
+        return user
