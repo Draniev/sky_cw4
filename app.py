@@ -2,7 +2,7 @@ from flask import Flask
 from flask_restx import Api
 #
 from config import Config
-from dao.models.user import User
+# from dao.models.user import User
 from setup_db import db
 # from models import Review, Book
 
@@ -40,7 +40,7 @@ def register_extensions(app: Flask):
 #         db.create_all()
 #
 #         # создать несколько сущностей чтобы добавить их в БД
-#         u1 = User(username="test_user", password="there must be a hash", role="user")
+#         u1 = User(username="test_user", password="there must be a hash")
 #         with db.session.begin():
 #             db.session.add_all([u1])
 
