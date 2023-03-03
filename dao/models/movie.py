@@ -1,21 +1,29 @@
-from setup_db import db
+from dao.models.basemodel import BaseModel
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import backref, relationship
 from marshmallow import Schema, fields
 
 
-class Movie(db.Model):
+class Movie(BaseModel):
     __tablename__ = 'movie'
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(255))
-    description = db.Column(db.String(255))
-    trailer = db.Column(db.String(255))
-    year = db.Column(db.Integer)
-    rating = db.Column(db.Integer)
-    genre_id = db.Column(db.Integer, db.ForeignKey('genre.id'))
-    director_id = db.Column(db.Integer, db.ForeignKey('director.id'))
-    genre = db.relationship('Genre')
-    director = db.relationship('Director')
+    id = Column(Integer, primary_key=True)
+    title = Column(String(255))
+    description = Column(String(255))
+    trailer = Column(String(255))
+    year = Column(Integer)
+    rating = Column(Integer)
+    genre_id = Column(Integer, ForeignKey('genre.id'))
+    director_id = Column(Integer, ForeignKey('director.id'))
+    genre = relationship('Genre',
+                         foreign_keys=[genre_id],
+                         backref=backref('movie')
+                         )
+    director = relationship('Director',
+                            foreign_keys=[director_id],
+                            backref=backref('movie')
+                            )
 
-    users_who_selected_favorite = db.relationship('User', secondary='favorite')
+    users_who_selected_favorite = relationship('User', secondary='favorite')
 
 
 class MovieSchema(Schema):

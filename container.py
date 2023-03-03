@@ -11,7 +11,7 @@ from services.favorite import FavoritesService
 from services.genre import GenreService
 from services.movie import MovieService
 from services.user import UserService
-from setup_db import db
+from setup.db import db
 from dao.movie import MovieDAO
 from dao.director import DirectorDAO
 from dao.genre import GenreDAO

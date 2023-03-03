@@ -3,7 +3,7 @@ from flask_restx import Api
 #
 from config import Config
 # from dao.models.user import User
-from setup_db import db
+from setup.db import db
 # from models import Review, Book
 
 # Импорт нэймспейсов из вьюшек

@@ -1,19 +1,26 @@
-# from dao.models.movie import MovieSchema
-# from dao.models.user import UserSchema
-from sqlalchemy.orm import backref
+from dao.models.basemodel import BaseModel
 
-from setup_db import db
+from sqlalchemy.orm import backref, relationship
+from sqlalchemy import Column, String, ForeignKey
+
 from marshmallow import Schema, fields
 
 
-class Favorite(db.Model):
+class Favorite(BaseModel):
     __tablename__ = 'favorite'
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.String(255), db.ForeignKey('user.id'))
-    movie_id = db.Column(db.String(255), db.ForeignKey('movie.id'))
+    user_id = Column(String(255), ForeignKey('user.id'))
+    movie_id = Column(String(255), ForeignKey('movie.id'))
 
-    user = db.relationship('User', foreign_keys=[user_id], backref=backref("favorite", cascade="all, delete-orphan"))
-    movie = db.relationship('Movie', foreign_keys=[movie_id], backref=backref("favorite", cascade="all, delete-orphan"))
+    user = relationship('User',
+                        foreign_keys=[user_id],
+                        backref=backref(
+                            "favorite", cascade="all, delete-orphan")
+                        )
+    movie = relationship('Movie',
+                         foreign_keys=[movie_id],
+                         backref=backref(
+                             "favorite", cascade="all, delete-orphan")
+                         )
 
 
 class FavoriteSchema(Schema):

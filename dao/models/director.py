@@ -1,15 +1,13 @@
-from setup_db import db
+from dao.models.basemodel import BaseModel
+from sqlalchemy import Column, String
 from marshmallow import Schema, fields
 
 
-class Director(db.Model):
+class Director(BaseModel):
     __tablename__ = 'director'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
+    name = Column(String(255))
 
 
 class DirectorSchema(Schema):
     id = fields.Integer()
     name = fields.String()
-
-

@@ -1,21 +1,22 @@
-# from dao.models.genre import GenreSchema
-from setup_db import db
+from dao.models.basemodel import BaseModel
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
 from marshmallow import fields, Schema
 
 
-class User(db.Model):
+class User(BaseModel):
     __tablename__ = 'user'
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(255), unique=True)
-    password = db.Column(db.String(255), load_only=True)
-    # role = db.Column(db.String(255))
-    name = db.Column(db.String(255))
-    surname = db.Column(db.String(255))
+    id = Column(Integer, primary_key=True)
+    email = Column(String(255), unique=True)
+    password = Column(String(255), load_only=True)
+    # role = Column(String(255))
+    name = Column(String(255))
+    surname = Column(String(255))
 
-    favorite_genre_id = db.Column(db.Integer, db.ForeignKey('genre.id'))
-    favorite_genre = db.relationship('Genre', foreign_keys=[favorite_genre_id])
+    favorite_genre_id = Column(Integer, ForeignKey('genre.id'))
+    favorite_genre = relationship('Genre', foreign_keys=[favorite_genre_id])
 
-    favorites = db.relationship('Movie', secondary='favorite')
+    favorites = relationship('Movie', secondary='favorite')
 
 
 class UserSchema(Schema):

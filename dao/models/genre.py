@@ -1,11 +1,12 @@
-from setup_db import db
+from dao.models.basemodel import BaseModel
 from marshmallow import Schema, fields
+from sqlalchemy import Column, Integer, String
 
 
-class Genre(db.Model):
+class Genre(BaseModel):
     __tablename__ = 'genre'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
+    id = Column(Integer, primary_key=True)
+    name = Column(String(255))
 
 
 class GenreSchema(Schema):
