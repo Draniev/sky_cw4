@@ -8,7 +8,7 @@ class User(BaseModel):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
     email = Column(String(255), unique=True)
-    password = Column(String(255), load_only=True)
+    password = Column(String(255))
     # role = Column(String(255))
     name = Column(String(255))
     surname = Column(String(255))
@@ -21,8 +21,8 @@ class User(BaseModel):
 
 class UserSchema(Schema):
     id = fields.Integer()
-    email = fields.String()
-    password = fields.String()
+    email = fields.Email()
+    password = fields.String(load_only=True)
     # role = fields.String()
     name = fields.String()
     surname = fields.String()
