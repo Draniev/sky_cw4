@@ -1,10 +1,8 @@
 from flask import Flask
-from flask_restx import Api
 #
+from setup.api import api
 from config import Config
-# from dao.models.user import User
 from setup.db import db
-# from models import Review, Book
 
 # Импорт нэймспейсов из вьюшек
 from views.favorite import favorite_ns
@@ -24,7 +22,7 @@ def create_app(config_object: Config) -> Flask:
 # функция подключения расширений (Flask-SQLAlchemy, Flask-RESTx, ...)
 def register_extensions(app: Flask):
     db.init_app(app)
-    api = Api(app)
+    api.init_app(app)
     api.add_namespace(movie_ns)
     api.add_namespace(genre_ns)
     api.add_namespace(director_ns)
@@ -32,7 +30,6 @@ def register_extensions(app: Flask):
     api.add_namespace(user_ns)
     api.add_namespace(auth_ns)
     api.add_namespace(favorite_ns)
-#     create_data(app, db)
 
 
 # def create_data(app, db):
