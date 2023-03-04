@@ -11,7 +11,8 @@ class MovieService:
         return self.movie_dao.get_one(mid)
 
     def get_all(self, filter_args: dict | None) -> list[Movie]:
-        return self.movie_dao.get_all(filter_args)
+        return self.movie_dao.get_all()
+        # return self.movie_dao.get_all(filter_args)
 
     def create(self, movie_data: dict) -> Movie:
         return self.movie_dao.create(movie_data)

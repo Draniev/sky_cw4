@@ -1,10 +1,10 @@
 from dao.favorite import FavoritesDAO
-from dao.models.director import DirectorSchema, Director
+from dao.models.director import DirectorSchema
 from dao.models.favorite import FavoriteSchema
-from dao.models.genre import GenreSchema, Genre
-from dao.models.movie import MovieSchema, Movie
+from dao.models.genre import GenreSchema
+from dao.models.movie import MovieSchema
 from dao.models.user import UserSchema
-from dao.universal_entity import UniversalDAO
+# from dao.base_dao import BaseDAO
 from dao.user import UserDAO
 from services.director import DirectorService
 from services.favorite import FavoritesService
@@ -17,17 +17,17 @@ from dao.director import DirectorDAO
 from dao.genre import GenreDAO
 
 
-# genre_dao = GenreDAO(db.session)
-# director_dao = DirectorDAO(db.session)
-movie_dao = MovieDAO(db.session)    # т.к. тут еще фильтрацию надо, то 'экспериментальный' пока брать не будем
+genre_dao = GenreDAO(db.session)
+director_dao = DirectorDAO(db.session)
+movie_dao = MovieDAO(db.session)
 user_dao = UserDAO(db.session)
 favorites_dao = FavoritesDAO(db.session)
 
 # Тут использую экспериментальный ДАО объект.
 # Если уж нет разницы в запросах из БД,
 # так что решил и два разных класса не делать
-genre_dao = UniversalDAO(db.session, Genre)
-director_dao = UniversalDAO(db.session, Director)
+# genre_dao = BaseDAO(db.session, Genre)
+# director_dao = BaseDAO(db.session, Director)
 # movie_dao = UniversalDAO(db.session, Movie)
 
 genre_service = GenreService(genre_dao)

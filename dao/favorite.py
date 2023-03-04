@@ -1,12 +1,11 @@
-from flask_sqlalchemy import SQLAlchemy
+from dao.base_dao import BaseDAO
 from dao.models.favorite import Favorite
 from dao.models.movie import Movie
 from dao.models.user import User
 
 
-class FavoritesDAO:
-    def __init__(self, session: SQLAlchemy().session):
-        self.session = session
+class FavoritesDAO(BaseDAO[Favorite]):
+    __model__ = Favorite
 
     def get_by_user(self, uid: int) -> list[Favorite]:
         favorites = self.session.query(Favorite) \
@@ -32,7 +31,9 @@ class FavoritesDAO:
         else:
             return None
 
-    def get_by_user_movie(self, user_id: int, movie_id: int) -> Favorite | None:
+    def get_by_user_movie(self,
+                          user_id: int,
+                          movie_id: int) -> Favorite | None:
         items = self.session.query(Favorite) \
             .filter(Favorite.user_id == user_id) \
             .filter(Favorite.movie_id == movie_id) \
@@ -43,7 +44,9 @@ class FavoritesDAO:
         else:
             return None
 
-    def delete_by_user_movie(self, user_id: int, movie_id: int) -> Favorite | None:
+    def delete_by_user_movie(self,
+                             user_id: int,
+                             movie_id: int) -> Favorite | None:
         item = self.get_by_user_movie(user_id, movie_id)
 
         if item:
@@ -53,7 +56,9 @@ class FavoritesDAO:
         else:
             return None
 
-    def create_by_user_movie(self, user_id: int, movie_id: int) -> Favorite | None:
+    def create_by_user_movie(self,
+                             user_id: int,
+                             movie_id: int) -> Favorite | None:
         # Проверяем наличие аналогичной записи, если еще нет, то создаём
         item = self.get_by_user_movie(user_id, movie_id)
         if item:
