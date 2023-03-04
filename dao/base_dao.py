@@ -16,7 +16,7 @@ class BaseDAO(Generic[T]):
     def get_one(self, uid: int) -> T | None:
         return self.session.query(self.__model__).get(uid)
 
-    def get_all(self) -> list[T] | None:
+    def get_all(self, page: int | None = None) -> list[T] | None:
         return self.session.query(self.__model__).all()
 
     def create(self, entity_data: dict) -> T:
