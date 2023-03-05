@@ -1,10 +1,10 @@
 from typing import TypeVar, Generic
 
+from flask import current_app
 from sqlalchemy.orm import Query
 from sqlalchemy.orm import scoped_session
 
 from dao.models.basemodel import BaseModel
-from constants import ITEMS_PER_PAGE
 
 T = TypeVar('T', bound=BaseModel)
 
@@ -15,15 +15,20 @@ class BaseDAO(Generic[T]):
     def __init__(self, session: scoped_session):
         self.session = session
 
+    @property
+    def _items_per_page(self) -> int:
+        return current_app.config['ITEMS_PER_PAGE']
+
     def get_one(self, uid: int) -> T | None:
-        return self.session.query(self.__model__).get(uid)
+        return self.session.get(self.__model__, uid)
 
     def get_all(self, page: int | None = None) -> list[T]:
         stmt: Query = self.session.query(self.__model__)
         if page:
             try:
                 # return stmt.paginate(page=1, max_per_page=2).items
-                return stmt.paginate(page=page, per_page=ITEMS_PER_PAGE).items
+                return stmt.paginate(page=page,
+                                     per_page=self._items_per_page).items
             except Exception:
                 return []
         return stmt.all()

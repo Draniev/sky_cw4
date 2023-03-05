@@ -3,7 +3,7 @@ from sqlalchemy.orm import Query
 from dao.base_dao import BaseDAO
 from dao.models.movie import Movie
 
-from constants import ITEMS_PER_PAGE
+# from constants import ITEMS_PER_PAGE
 
 
 class MovieDAO(BaseDAO[Movie]):
