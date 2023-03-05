@@ -23,7 +23,9 @@ class Movie(BaseModel):
                             backref=backref('movie')
                             )
 
-    users_who_selected_favorite = relationship('User', secondary='favorite')
+    users_who_selected_favorite = relationship('User',
+                                               secondary='favorite',
+                                               viewonly=True)
 
 
 class MovieSchema(Schema):

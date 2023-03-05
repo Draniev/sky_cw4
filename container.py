@@ -1,21 +1,22 @@
-from dao.favorite import FavoritesDAO
 from dao.models.director import DirectorSchema
 from dao.models.favorite import FavoriteSchema
 from dao.models.genre import GenreSchema
 from dao.models.movie import MovieSchema
 from dao.models.user import UserSchema
-# from dao.base_dao import BaseDAO
+
+from dao.director import DirectorDAO
+from dao.genre import GenreDAO
+from dao.movie import MovieDAO
 from dao.user import UserDAO
+from dao.favorite import FavoritesDAO
+
 from services.director import DirectorService
 from services.favorite import FavoritesService
 from services.genre import GenreService
 from services.movie import MovieService
 from services.user import UserService
-from setup.db import db
-from dao.movie import MovieDAO
-from dao.director import DirectorDAO
-from dao.genre import GenreDAO
 
+from setup.db import db
 
 genre_dao = GenreDAO(db.session)
 director_dao = DirectorDAO(db.session)

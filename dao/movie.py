@@ -1,7 +1,9 @@
+from sqlalchemy.orm import Query
+
 from dao.base_dao import BaseDAO
 from dao.models.movie import Movie
+
 from constants import ITEMS_PER_PAGE
-from flask_sqlalchemy import BaseQuery
 
 
 class MovieDAO(BaseDAO[Movie]):
@@ -11,7 +13,7 @@ class MovieDAO(BaseDAO[Movie]):
                 page: int | None = None,
                 novelties: bool = False) -> list[Movie]:
 
-        stmt: BaseQuery = self.session.query(self.__model__)
+        stmt: Query = self.session.query(self.__model__)
         if novelties:
             stmt = stmt.order_by(self.__model__.year.desc())
 

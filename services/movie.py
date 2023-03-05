@@ -1,6 +1,5 @@
 from dao.models.movie import Movie
 from dao.movie import MovieDAO
-# from dao.universal_entity import UniversalDAO
 
 
 class MovieService:
@@ -12,7 +11,6 @@ class MovieService:
 
     def get_all(self, page: int | None = None, novelties: bool = False) -> list[Movie]:
         return self.movie_dao.get_all(page=page, novelties=novelties)
-        # return self.movie_dao.get_all(filter_args)
 
     def create(self, movie_data: dict) -> Movie:
         return self.movie_dao.create(movie_data)

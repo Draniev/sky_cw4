@@ -14,12 +14,14 @@ class Favorite(BaseModel):
     user = relationship('User',
                         foreign_keys=[user_id],
                         backref=backref(
-                            "favorite", cascade="all, delete-orphan")
+                            "favorite", cascade="all, delete-orphan"),
+                        viewonly=True
                         )
     movie = relationship('Movie',
                          foreign_keys=[movie_id],
                          backref=backref(
-                             "favorite", cascade="all, delete-orphan")
+                             "favorite", cascade="all, delete-orphan"),
+                         viewonly=True
                          )
 
 
