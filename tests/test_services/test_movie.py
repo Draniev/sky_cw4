@@ -2,6 +2,10 @@ from unittest.mock import MagicMock
 
 import pytest
 
+from dao.models.favorite import Favorite
+from dao.models.user import User
+from dao.models.director import Director
+from dao.models.genre import Genre
 from dao.models.movie import Movie
 from dao.movie import MovieDAO
 from services.movie import MovieService
@@ -9,9 +13,9 @@ from services.movie import MovieService
 
 @pytest.fixture()
 def movie_dao_mock():
-    movie_1 = Movie(id=1, title='Фильм номер 1')
-    movie_2 = Movie(id=2, title='Фильм номер 2')
-    movie_3 = Movie(id=3, title='Фильм номер 3')
+    movie_1 = Movie(id=1, title='Фильм номер 1', genre_id=1, director_id=1)
+    movie_2 = Movie(id=2, title='Фильм номер 2', genre_id=1, director_id=1)
+    movie_3 = Movie(id=3, title='Фильм номер 3', genre_id=1, director_id=1)
     movies_list = [movie_1, movie_2, movie_3]
 
     movie_dao = MovieDAO(None)
