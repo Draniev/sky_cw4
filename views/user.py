@@ -18,12 +18,6 @@ class UsersView(Resource):
         users = user_service.get_all()
         return user_schema.dump(users, many=True), 200
 
-    # # Создание нового пользователя (переехало в auth/register)
-    # def post(self):
-    #     user_data = request.json
-    #     user = user_service.create(user_data)
-    #     return "", 201
-
 
 @users_ns.route('/<int:uid>')
 class UserViewByID(Resource):
@@ -107,5 +101,6 @@ class UserChangePassword(Resource):
         current_user = check_auth(request.headers)
         old_password = request.json.get('password_1')
         new_password = request.json.get('password_2')
-        user = user_service.update_password(current_user.get('id'), old_password, new_password)
+        user = user_service.update_password(
+            current_user.get('id'), old_password, new_password)
         return "", 201

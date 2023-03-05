@@ -22,9 +22,8 @@ class BaseDAO(Generic[T]):
         stmt: BaseQuery = self.session.query(self.__model__)
         if page:
             try:
-                return stmt.paginate(page=page,
-                                     per_page=ITEMS_PER_PAGE,
-                                     error_out=True).items
+                # return stmt.paginate(page=1, max_per_page=2).items
+                return stmt.paginate(page=page, per_page=ITEMS_PER_PAGE).items
             except Exception:
                 return []
         return stmt.all()

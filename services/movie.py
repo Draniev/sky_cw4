@@ -10,8 +10,8 @@ class MovieService:
     def get_one(self, mid: int) -> Movie | None:
         return self.movie_dao.get_one(mid)
 
-    def get_all(self, page: int | None = None) -> list[Movie]:
-        return self.movie_dao.get_all(page=page)
+    def get_all(self, page: int | None = None, novelties: bool = False) -> list[Movie]:
+        return self.movie_dao.get_all(page=page, novelties=novelties)
         # return self.movie_dao.get_all(filter_args)
 
     def create(self, movie_data: dict) -> Movie:

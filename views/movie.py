@@ -1,8 +1,10 @@
 from flask import request
 from flask_restx import Resource, Namespace
+from webargs.flaskparser import parser
 
 from container import movie_service, movie_schema
 from utils import admin_required
+from setup.parser import def_filter_args
 
 movie_ns = Namespace('movies')
 
@@ -13,6 +15,9 @@ class MoviesView(Resource):
     Отображает список всех фильмов и добавляет новый фильм (если вы админ, ха)
     """
 
+    @movie_ns.doc(params={'page': 'The page number of the requested data',
+                          'status': 'New or blank, display new items at top',
+                          })
     def get(self):
         """
         Отображает список всех фильмов с потстраничной пагинацией.
@@ -21,11 +26,15 @@ class MoviesView(Resource):
 
         В исходниках для пагинации используются возможности модуля flask_restx,
         но в документации к модулю же рекомендуется использовать что-то еще,
-        например marshmallow. Только для валидации? В общем, тут уже не хотелось
-        заморачиваться :), в ТЗ обработки всех возможных ошибок не было ;).
+        например marshmallow.
         """
-        page = request.args.to_dict().get('page')
-        movies = movie_service.get_all(page=page)
+        args = parser.parse(def_filter_args, request, location='query')
+        page = args.get('page', None)
+        if args.get('status', None) == 'New':
+            novelties = True
+        else:
+            novelties = False
+        movies = movie_service.get_all(page=page, novelties=novelties)
         return movie_schema.dump(movies, many=True), 200
 
     # Создание нового

@@ -2,6 +2,8 @@ from flask import request
 from flask_restx import Resource, Namespace
 from container import genre_schema, genre_service
 from utils import admin_required, auth_required
+from setup.parser import def_filter_args
+from webargs.flaskparser import parser
 
 genre_ns = Namespace('genres')
 
@@ -12,12 +14,14 @@ class GenresView(Resource):
     Эндпоинт для работы со списком жанров: отображение и добавление новых
     """
 
+    @genre_ns.doc(params={'page': 'The page number of the requested data'})
     @auth_required
     def get(self):
         """
         Отображение списка всех жанров
         """
-        page = request.args.to_dict().get('page')
+        args = parser.parse(def_filter_args, request, location='query')
+        page = args.get('page', None)
         genres = genre_service.get_all(page=page)
         return genre_schema.dump(genres, many=True), 200
 

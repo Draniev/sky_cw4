@@ -2,6 +2,8 @@ from flask import request
 from flask_restx import Resource, Namespace
 from container import director_service, director_schema
 from utils import admin_required
+from webargs.flaskparser import parser
+from setup.parser import def_filter_args
 
 director_ns = Namespace('directors')
 
@@ -13,12 +15,14 @@ class DirectorsView(Resource):
     Отображение всех режисёров и создание новых.
     """
 
+    @director_ns.doc(params={'page': 'The page number of the requested data'})
     def get(self):
         """
         Отображение всех режисёров. Постранично при наличии параметра
         page в запросе.
         """
-        page = request.args.to_dict().get('page')
+        args = parser.parse(def_filter_args, request, location='query')
+        page = args.get('page', None)
         directors = director_service.get_all(page=page)
         return director_schema.dump(directors, many=True), 200
 
