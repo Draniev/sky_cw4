@@ -8,15 +8,25 @@ director_ns = Namespace('directors')
 
 @director_ns.route('/')
 class DirectorsView(Resource):
-    # Получение всех режисcёров
+    """
+    Эндпоинт для работы с объектом Режисёра.
+    Отображение всех режисёров и создание новых.
+    """
+
     def get(self):
-        directors = director_service.get_all()
+        """
+        Отображение всех режисёров. Постранично при наличии параметра
+        page в запросе.
+        """
+        page = request.args.to_dict().get('page')
+        directors = director_service.get_all(page=page)
         return director_schema.dump(directors, many=True), 200
 
     @admin_required
     def post(self):
+        """Добавление нового режиссера в базу данных"""
         director_data = request.json
-        director = director_service.create(director_data)
+        director_service.create(director_data)
         return "", 201
 
 
@@ -24,12 +34,16 @@ class DirectorsView(Resource):
 class DirectorView(Resource):
     # Получение режисcёра по ID
     def get(self, did: int):
+        """Отображение данных конкретного режиссера"""
         director = director_service.get_one(did)
         return director_schema.dump(director), 200
 
     # Изменение одного
     @admin_required
     def put(self, did):
+        """
+        Обновление данных для режисера с ID
+        """
         director_data = request.json
         director_data['id'] = did
         director = director_service.update(director_data)

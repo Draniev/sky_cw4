@@ -8,16 +8,26 @@ genre_ns = Namespace('genres')
 
 @genre_ns.route('/')
 class GenresView(Resource):
-    # Получение списка всех жанров
+    """
+    Эндпоинт для работы со списком жанров: отображение и добавление новых
+    """
+
     @auth_required
     def get(self):
-        genres = genre_service.get_all()
+        """
+        Отображение списка всех жанров
+        """
+        page = request.args.to_dict().get('page')
+        genres = genre_service.get_all(page=page)
         return genre_schema.dump(genres, many=True), 200
 
     @admin_required
     def post(self):
+        """
+        Добавление нового жанра. По задумке должно быть доступно только администратору
+        """
         genre_data = request.json
-        genre = genre_service.create(genre_data)
+        genre_service.create(genre_data)
         return "", 201
 
 

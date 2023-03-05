@@ -9,8 +9,8 @@ class GenreService:
     def get_one(self, gid) -> Genre:
         return self.genre_dao.get_one(gid)
 
-    def get_all(self) -> list[Genre]:
-        return self.genre_dao.get_all()
+    def get_all(self, page: int | None = None) -> list[Genre]:
+        return self.genre_dao.get_all(page=page)
 
     def create(self, genre_data: dict) -> Genre:
         return self.genre_dao.create(genre_data)

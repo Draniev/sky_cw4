@@ -9,8 +9,8 @@ class DirectorService:
     def get_one(self, did: int) -> Director:
         return self.director_dao.get_one(did)
 
-    def get_all(self) -> list[Director]:
-        return self.director_dao.get_all()
+    def get_all(self, page: int | None = None) -> list[Director]:
+        return self.director_dao.get_all(page=page)
 
     def create(self, director_data: dict) -> Director:
         return self.director_dao.create(director_data)
