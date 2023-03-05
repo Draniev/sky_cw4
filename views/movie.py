@@ -39,6 +39,7 @@ class MoviesView(Resource):
 
     # Создание нового
     @admin_required
+    @movie_ns.doc(security='Bearer')
     def post(self):
         """
         Добавление нового фильма в базу данных
@@ -66,6 +67,7 @@ class MovieView(Resource):
 
     # Изменение одного
     @admin_required
+    @movie_ns.doc(security='Bearer')
     def put(self, mid):
         """
         Обновление фильма данными из запроса
@@ -80,6 +82,7 @@ class MovieView(Resource):
 
     # Удаление
     @admin_required
+    @movie_ns.doc(security='Bearer')
     def delete(self, mid):
         """
         Удаление фильма с концами с сервера. Отменить невозможно, так то!

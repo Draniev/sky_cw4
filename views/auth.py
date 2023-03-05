@@ -1,4 +1,3 @@
-import re
 
 import jwt
 from flask import request
@@ -14,6 +13,10 @@ auth_ns = Namespace('auth')
 @auth_ns.route('/login')
 class AuthView(Resource):
     # Аутентификация по логину/паролю и выдача токенов
+    @auth_ns.doc(params={
+        'email': {'description': 'Электронная почта', 'in': 'formData', 'example': 'test@email.ru'},
+        'password': {'description': 'Пароль', 'in': 'formData', 'example': 'admin'},
+    })
     def post(self):
         """
         Аутентификация по email и паролю.
@@ -45,6 +48,10 @@ class AuthView(Resource):
         return tokens, 201
 
     # Аутентификация по рефреш токену и обновление access токена
+    @auth_ns.doc(params={
+        'email': {'description': 'Электронная почта', 'in': 'formData', 'example': 'test@email.ru'},
+        'refresh_token': {'description': 'Токен для обновления аутентификации', 'in': 'formData'},
+    })
     def put(self):
         """
         В функции обновляем токены доступа по рефреш токену.
@@ -61,8 +68,9 @@ class AuthView(Resource):
             return {"error": "Неверные учётные данные"}, 400
 
         try:
-            decoded_token = jwt.decode(refresh_token, JWT_SECRET_KEY, algorithms=[JWT_TOKEN_ALGORITHM])
-        except Exception as e:
+            decoded_token = jwt.decode(
+                refresh_token, JWT_SECRET_KEY, algorithms=[JWT_TOKEN_ALGORITHM])
+        except Exception:
             return {"error": "Неверные учётные данные"}, 401
 
         # Если имя в данных токена не соответствует имени в запросе
@@ -79,10 +87,16 @@ class AuthView(Resource):
 
 @auth_ns.route('/register')
 class NewUserRegister(Resource):
+    @auth_ns.header('Content-Type', 'application/json')
+    @auth_ns.doc(params={
+        'email': {'description': 'Электронная почта', 'in': 'formData', 'example': 'test@email.ru'},
+        'password': {'description': 'Пароль', 'in': 'formData', 'example': 'admin'},
+    })
     def post(self):
         """
         Регистрирует нового пользователя в системе.
-        В качестве параметров запроса обязательно ждём электронную почту и пароль
+        В качестве параметров запроса обязательно
+        ждём электронную почту и пароль
         :return: "", 201
         """
         req_json = request.json
@@ -100,5 +114,6 @@ class NewUserRegister(Resource):
         if not is_email_valid(email):
             return {"error": "В качестве имени пользователя указан не корректные email"}, 400
 
-        user = user_service.create(req_json)  # Не знаю, стоит ли тут вернуть сразу токены авторизации?
+        # Не знаю, стоит ли тут вернуть сразу токены авторизации?
+        user = user_service.create(req_json)
         return "", 201, {'localtion': f'/users/{user.id}'}

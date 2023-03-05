@@ -63,21 +63,28 @@ class UserViewByID(Resource):
 
 
 @user_ns.route('/')
+@user_ns.doc(security='Bearer')
 class UserView(Resource):
     def get(self):
         """
         Вывод информации (личной страницы) о текущем пользователе
-        :return:
+        Для получения доступа нужно передать АПИ-ключ в Хедере
         """
 
         current_user = check_auth(request.headers)
         user = user_service.get_one(current_user.get('id'))
         return user_schema.dump(user), 200
 
+    @user_ns.doc(params={
+        'name': {'description': 'Имя кожаного мешка', 'in': 'body', 'example': 'Пётр'},
+        'surname': {'description': 'Фимилия кожаного мешка', 'in': 'body', 'example': 'Князев'},
+        'email': {'description': 'Электронная почта', 'in': 'body', 'example': 'test@email.ru'},
+        'favorite_genre_id': {'description': 'Id любимого жарна', 'in': 'body', 'example': '2'},
+    })
     def patch(self):
         """
         Обновление данных текущего пользователя (имя, фамилия, почта, жанр)
-        :return:
+        Обновляемые поля должны быть переданы в теле запроса.
         """
 
         current_user = check_auth(request.headers)
@@ -91,6 +98,7 @@ class UserView(Resource):
 
 
 @user_ns.route('/password')
+@user_ns.doc(security='Bearer')
 class UserChangePassword(Resource):
     def put(self):
         """
