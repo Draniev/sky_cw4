@@ -8,6 +8,9 @@ from constants import PWD_HASH_SALT, PWD_HASH_ITERATIONS, JWT_SECRET_KEY, JWT_TO
 
 
 def get_hash(password):
+    """
+    Преобразует обычный пароль в ХЭШ
+    """
     return hashlib.pbkdf2_hmac(
         PWD_ALGORITHM,
         password.encode('utf-8'),  # Convert the password to bytes
@@ -17,8 +20,12 @@ def get_hash(password):
 
 
 def generate_jwt(user_data: dict) -> dict[str:str]:
+    """
+    Генерирует ТОКЕНЫ для доступа к API на основе данных пользователя
+    """
     time_utc = int(time.time())
-    time_30min = time_utc + 1800            # Добавляем 30 минут для текущего времени
+    # Добавляем 30 минут для текущего времени
+    time_30min = time_utc + 1800
     # Добавляем 100 дней для текущего времени
     time_100d = time_utc + 3600 * 24 * 100
 

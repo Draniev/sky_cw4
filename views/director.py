@@ -40,7 +40,10 @@ class DirectorView(Resource):
     def get(self, did: int):
         """Отображение данных конкретного режиссера"""
         director = director_service.get_one(did)
-        return director_schema.dump(director), 200
+        if director:
+            return director_schema.dump(director), 200
+        else:
+            return "Ошибка, ошибка, внимательнее надо!", 404
 
     # Изменение одного
     @admin_required

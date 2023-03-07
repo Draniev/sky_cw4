@@ -12,14 +12,15 @@ user_ns = Namespace('user')
 class UsersView(Resource):
     def get(self):
         """
-        Список всех пользователей системы. Доступ без авторизации (почему бы и нет)
-        :return:
+        Список всех пользователей системы.
+        Доступ без авторизации (почему бы и нет)
         """
         users = user_service.get_all()
         return user_schema.dump(users, many=True), 200
 
 
 @users_ns.route('/<int:uid>')
+@user_ns.doc(security='Bearer')
 class UserViewByID(Resource):
     # Отображение данных о пользователе. Для админа
     @auth_required
@@ -89,12 +90,12 @@ class UserView(Resource):
 
         current_user = check_auth(request.headers)
         fields_4_update = request.json
-        fields_4_update[id] = current_user.id
+        fields_4_update['id'] = current_user['id']
         user = user_service.update(fields_4_update)
         if user:
             return "", 201
         else:
-            return "Что-то пошло не так", 400
+            return "Что-то пошло не так", 500
 
 
 @user_ns.route('/password')
@@ -109,6 +110,7 @@ class UserChangePassword(Resource):
         current_user = check_auth(request.headers)
         old_password = request.json.get('password_1')
         new_password = request.json.get('password_2')
-        user = user_service.update_password(
-            current_user.get('id'), old_password, new_password)
+        user_service.update_password(current_user.get('id'),
+                                     old_password,
+                                     new_password)
         return "", 201

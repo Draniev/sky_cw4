@@ -1,7 +1,7 @@
 from flask import request
 from flask_restx import Resource, Namespace
 from container import genre_schema, genre_service
-from utils import admin_required, auth_required
+from utils import admin_required
 from setup.parser import def_filter_args
 from webargs.flaskparser import parser
 
@@ -15,7 +15,6 @@ class GenresView(Resource):
     """
 
     @genre_ns.doc(params={'page': 'The page number of the requested data'})
-    @auth_required
     def get(self):
         """
         Отображение списка всех жанров
@@ -28,7 +27,7 @@ class GenresView(Resource):
     @admin_required
     def post(self):
         """
-        Добавление нового жанра. По задумке должно быть доступно только администратору
+        Добавление нового жанра. По задумке доступно только администратору
         """
         genre_data = request.json
         genre_service.create(genre_data)
@@ -39,8 +38,14 @@ class GenresView(Resource):
 class GenreView(Resource):
     # Получение жанра по ID
     def get(self, gid: int):
+        """
+        Получение жанра по его ID
+        """
         genre = genre_service.get_one(gid)
-        return genre_schema.dump(genre), 200
+        if genre:
+            return genre_schema.dump(genre), 200
+        else:
+            return "Ошибка, ошибка, ошибка!", 404
 
     # Изменение одного
     @admin_required

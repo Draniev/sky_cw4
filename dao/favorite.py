@@ -34,10 +34,10 @@ class FavoritesDAO(BaseDAO[Favorite]):
     def get_by_user_movie(self,
                           user_id: int,
                           movie_id: int) -> Favorite | None:
-        items = self.session.query(Favorite) \
-            .filter(Favorite.user_id == user_id) \
-            .filter(Favorite.movie_id == movie_id) \
-            .all()
+        smtm = self.session.query(Favorite)\
+            .filter(Favorite.user_id == user_id)\
+            .filter(Favorite.movie_id == movie_id)
+        items = smtm.all()
 
         if len(items) == 1:
             return items[0]
