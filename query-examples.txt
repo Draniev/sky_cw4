@@ -1,0 +1,22 @@
+curl -X 'POST' 127.0.0.1:10001/auth/register \
+-d '{"password":"123", "email":"test1@user.ru"}' \
+-H 'Content-type: application/json'
+
+curl -X 'POST' 127.0.0.1:10001/auth/login \
+-d '{"password":"admin", "email":"admin@admin.ru"}' \
+-H 'Content-type: application/json'
+
+curl -X 'GET' 127.0.0.1:10001/user/ -H 'Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGFkbWluLnJ1IiwiaWQiOjMsImV4cCI6MTY3ODIwMzg2OH0.jQsivelk2unCfHHB49nvXTwKIjjuw1btrsJan2YGZfI'
+
+curl -X 'PATCH' 127.0.0.1:10001/user/ \
+-d '{"name":"IVAN"}' \
+-H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGFkbWluLnJ1IiwiaWQiOjMsImV4cCI6MTY3ODE0NzI5Nn0.BFPKfeI3-q3NRmQ4zVMy83CaljmyeMjFOTl2bG4Uc3I' \
+-H 'Content-type: application/json'
+
+curl -X 'PUT' 127.0.0.1:10001/user/password \
+-d '{"password_1":"admin1", "password_2":"admin"}' \
+-H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGFkbWluLnJ1IiwiaWQiOjMsImV4cCI6MTY3ODE0OTYwN30.uooJ4eNEEJK_tFJxd9af76X8VO_5hxMGVT-_TesOCmY' \
+-H 'Content-type: application/json'
+
+curl -X 'POST' 127.0.0.1:10001/favorites/movies/6 -H 'Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGFkbWluLnJ1IiwiaWQiOjMsImV4cCI6MTY3ODIwMzg2OH0.jQsivelk2unCfHHB49nvXTwKIjjuw1btrsJan2YGZfI'
+curl -X 'DELETE' 127.0.0.1:10001/favorites/movies/6 -H 'Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGFkbWluLnJ1IiwiaWQiOjMsImV4cCI6MTY3ODIwMzg2OH0.jQsivelk2unCfHHB49nvXTwKIjjuw1btrsJan2YGZfI'
